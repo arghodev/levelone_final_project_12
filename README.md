@@ -107,6 +107,6 @@ Use `.env` files in both folders and load them securely.
 
 ## 📮 Contact
 
-Created with 💙 by [Your Name]
+Created with 💙 by [Argho Dev]
 
 > Feel free to open an issue or pull request for suggestions or improvements.
