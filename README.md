@@ -99,8 +99,8 @@ Use `.env` files in both folders and load them securely.
 
 > _You can add images here using GitHub markdown or deployed links_
 ```md
-![Home Page](https://your-screenshot-link.png)
-![Dashboard](https://your-screenshot-link.png)
+![](fullpage.png)
+![](dashboard.png)
 ```
 
 ---
