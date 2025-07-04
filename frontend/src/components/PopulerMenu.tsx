@@ -38,11 +38,12 @@ const PopulerMenu = () => {
       <div className="grid grid-cols-2  gap-4  overflow-hidden  py-10">
         {menu.map(({ name, image, price }, index) => (
           <div className=" flex  " key={index}>
-            <div className="  p-2">
+            <div className="hover:scale-120 hover:grayscale-0 grayscale-100 transition duration-300  p-2">
               <img
                 src={image}
                 alt=""
-                className="object-cover overflow-hidden  w-40 mx-auto h-32 rounded-bl-full rounded-br-full rounded-tr-full"
+                className="object-cover overflow-hidden  w-40 mx-auto h-32 rounded-bl-full rounded-br-full rounded-tr-full
+                "
               />
             </div>
             <div className=" flex flex-col gap-2">

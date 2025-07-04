@@ -59,7 +59,7 @@ const Footer = () => {
           </div>
         </nav>
       </footer>
-      <footer className="footer sm:footer-horizontal footer-center bg-primary text-base-content p-4">
+      <footer className="footer sm:footer-horizontal footer-center bg-primary text-white p-4">
         <aside>
           <p>
             Copyright © {new Date().getFullYear()} - All right reserved by ACME

@@ -1,38 +1,26 @@
 const Hero = () => {
   return (
-    <section className="mt-24">
-      <section className="  ">
-        <div className="container  flex flex-col  justify-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row lg:justify-between">
-          <div className="flex flex-col   justify-center p-6 text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
-            <h1 className="text-5xl font-bold leading-none sm:text-6xl">
-              Ac mattis
-              <span className="">senectus</span>erat
-              pharetra
-            </h1>
-            <p className="mt-6 mb-8 text-lg sm:mb-12">
-              Dictum aliquam porta in condimentum ac integer
-              <br className="hidden md:inline lg:hidden" />
-              turpis pulvinar, est scelerisque ligula sem
+    <section className="mt-20">
+      <div
+        className="hero rounded-xl overflow-hidden min-h-[60vh]"
+        style={{
+          backgroundImage:
+            "url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp)",
+        }}
+      >
+        <div className="hero-overlay"></div>
+        <div className="hero-content text-neutral-content text-center">
+          <div className="max-w-md">
+            <h1 className="mb-5 text-5xl font-bold">Hello there</h1>
+            <p className="mb-5">
+              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
+              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
+              et a id nisi.
             </p>
-            <div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
-              <a
-                rel="noopener noreferrer"
-                href="#"
-                className="px-8 py-3 text-lg font-semibold rounded "
-              >
-                Suspendisse
-              </a>
-              <a
-                rel="noopener noreferrer"
-                href="#"
-                className="px-8 py-3 text-lg font-semibold border rounded "
-              >
-                Malesuada
-              </a>
-            </div>
+            <button className="btn btn-primary">Get Started</button>
           </div>
         </div>
-      </section>
+      </div>
     </section>
   );
 };

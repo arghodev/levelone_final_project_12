@@ -17,3 +17,24 @@ html {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+/* //////// */
+html,
+body {
+  height: 100%;
+  overflow: auto;
+}
+#smooth-wrapper {
+  height: 100%;
+  overflow: hidden;
+}
+
+#smooth-content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1; /* This makes main take available vertical space */
+}

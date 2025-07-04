@@ -3,20 +3,25 @@ import Navber from "../components/shared/Navber";
 import Footer from "../components/shared/Footer";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-// ScrollSmoother requires ScrollTrigger
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollSmoother);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 const RootLayout = () => {
-  // useGSAP(() => {
-  //   ScrollSmoother.create({
-  //     smooth: 2,
-  //     effects: true,
-  //   });
-  // });
+  useGSAP(() => {
+    // Only initialize if not already created
+    if (!ScrollSmoother.get()) {
+      ScrollSmoother.create({
+        wrapper: "#smooth-wrapper",
+        content: "#smooth-content",
+        smooth: 2,
+        effects: true,
+      });
+    } else {
+      ScrollSmoother.get()?.refresh();
+    }
+  }, []);
 
   return (
     <section>
@@ -24,8 +29,15 @@ const RootLayout = () => {
         <nav>
           <Navber />
         </nav>
-        <div id="smooth-content">
-          <main className="min-h-screen">
+        <div
+          id="smooth-content"
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <main className="min-h-screen" style={{ flexGrow: 1 }}>
             <Outlet />
           </main>
           <footer>

@@ -5,9 +5,11 @@ import useMenu from "../../hooks/useMenu";
 import type { MenuItem } from "../../types/propsTypes";
 import SkeletenLoader from "../../components/shared/SkeletonLoader";
 import { Link } from "react-router";
+import { useState } from "react";
 
 const MenuPage = () => {
   const [menu, loading] = useMenu();
+  const [visibleCount, setVisibleCount] = useState(6);
 
   const popular = menu.filter((item: MenuItem) => item.category === "popular");
 
@@ -181,20 +183,20 @@ const MenuPage = () => {
           <TitleSection heading="From our Menu" subheading="check it out" />
         </div>
 
-        <div className="grid grid-cols-2  gap-4  overflow-hidden  p-10">
-          {menu.map(({ name, image, price }, index) => (
-            <div className=" flex  " key={index}>
-              <div className="  p-2">
+        <div className="grid grid-cols-2 gap-4 overflow-hidden p-10">
+          {menu.slice(0, visibleCount).map(({ name, image, price }, index) => (
+            <div className="flex" key={index}>
+              <div className="p-2">
                 <img
                   src={image}
                   alt=""
-                  className="object-cover overflow-hidden  w-40 mx-auto h-32 rounded-bl-full rounded-br-full rounded-tr-full"
+                  className="object-cover overflow-hidden w-40 mx-auto h-32 rounded-bl-full rounded-br-full rounded-tr-full"
                 />
               </div>
-              <div className=" flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
                 <h1 className="text-xl font-bold flex items-center justify-between">
                   {name} ----------{" "}
-                  <span className="text-yellow-500"> ${price}</span>
+                  <span className="text-yellow-500">${price}</span>
                 </h1>
                 <p>
                   Lorem ipsum dolor sit, amet consectetur adipisicing elit.
@@ -204,6 +206,17 @@ const MenuPage = () => {
             </div>
           ))}
         </div>
+
+        {visibleCount < menu.length && (
+          <div className="text-center mb-10">
+            <button
+              onClick={() => setVisibleCount(menu.length)}
+              className="rounded border-0 border-b-2 px-4 py-2 hover:bg-black hover:text-white transition duration-300 mt-5 cursor-pointer"
+            >
+              Load All
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
