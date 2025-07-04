@@ -98,10 +98,11 @@ Use `.env` files in both folders and load them securely.
 ## 📸 Screenshots
 
 > _You can add images here using GitHub markdown or deployed links_
-```md
+
+
 ![](fullpage.png)
 ![](dashboard.png)
-```
+
 
 ---
 
