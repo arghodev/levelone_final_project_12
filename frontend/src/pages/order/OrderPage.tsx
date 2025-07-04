@@ -9,6 +9,9 @@ import { useAuth } from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useCart from "../../hooks/useCart";
+// import toast from "react-hot-toast";
+import { toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const OrderPage = () => {
   const [menu, loading] = useMenu();
@@ -36,13 +39,34 @@ const OrderPage = () => {
 
       axiosSecure.post("/carts", cart).then((res) => {
         if (res.data.insertedId) {
+          toast.success(`Added ${item.name} to the cart`, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+          });
           refetch();
         }
         console.log(res.data);
       });
     } else {
       navigate("/login", { state: { from: location } });
-      alert("Please login first");
+      toast.error(`Please login to order`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
     }
   };
 

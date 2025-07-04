@@ -3,6 +3,9 @@ import img from "../../../src/assets/message.svg";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import emailjs from "@emailjs/browser";
+// import toast from "react-hot-toast";
+import { toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type FormData = {
   name: string;
@@ -64,7 +67,19 @@ const ContactForm = () => {
       console.log("Failed to send email:", error);
       alert("Failed to send email. Please try again.");
     } finally {
-      alert("Message sent successfully");
+      // alert("Message sent successfully");
+      toast.success(`Message sent successfully`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        transition: Bounce,
+      });
+
       reset();
     }
   };
