@@ -1,0 +1,106 @@
+import { MdDelete } from "react-icons/md";
+import useCart from "../../hooks/useCart";
+import type { CartItem } from "../../types/propsTypes";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+
+const CartPage = () => {
+  const axiosSecure = useAxiosSecure();
+  const { refetch, data } = useCart();
+  //   console.log(data[0]._id);
+
+  const totalPrice = data.reduce(
+    (sum: number, item: CartItem): number => sum + item.price,
+    0
+  );
+
+  const handleDelete = (id: string | undefined) => {
+    console.log(id);
+    axiosSecure.delete(`/carts/${id}`).then((res) => {
+      if (res.data.deletedCount > 0) {
+        alert("Deleted Successfully");
+        refetch();
+        console.log(res.data);
+      }
+    });
+  };
+
+  return (
+    <section className="container mx-auto">
+      <div className="flex justify-between border-t-2 border-b-2 border-black/20 py-5 items-center">
+        <h1 className="text-xl ">
+          Total Order: <span className="font-black"> {data.length} </span>
+        </h1>
+        <h1 className="text-xl ">
+          Total Price: <span className="font-black"> ${totalPrice} </span>
+        </h1>
+        <button className="btn btn-wide btn-secondary font-black">PAY</button>
+      </div>
+      <div className="drop-shadow-lg">
+        <div className="overflow-x-auto ">
+          <table className="table ">
+            {/* head */}
+            <thead>
+              <tr>
+                <th>
+                  <label>
+                    <input type="checkbox" className="checkbox" />
+                  </label>
+                </th>
+                <th>Name</th>
+                <th>Email </th>
+                <th>Price</th>
+                <th>Action</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item: CartItem) => (
+                <>
+                  {/* row 1 */}
+                  <tr key={item.name}>
+                    <th>
+                      <label>
+                        <input type="checkbox" className="checkbox" />
+                      </label>
+                    </th>
+                    <td>
+                      <div className="flex items-center gap-3">
+                        <div className="avatar">
+                          <div className="mask mask-squircle h-12 w-12">
+                            <img
+                              src={item.image}
+                              alt="Avatar Tailwind CSS Component"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <div className="font-bold">{item.name}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="badge  badge-md">{item.email}</span>
+                    </td>
+                    <td className="text-lg">
+                      $ <span className="font-black   ">{item.price}</span>
+                    </td>
+                    <th>
+                      <button
+                        onClick={() => handleDelete(item._id)}
+                        className="btn btn-soft btn-error font-black"
+                      >
+                        <MdDelete className="text-3xl" />
+                      </button>
+                    </th>
+                  </tr>
+                </>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default CartPage;
