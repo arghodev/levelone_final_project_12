@@ -1,6 +1,6 @@
 const Hero = () => {
   return (
-    <section className="mt-20">
+    <section className="mt-30">
       <div
         className="hero rounded-xl overflow-hidden min-h-[60vh]"
         style={{
