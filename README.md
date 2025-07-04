@@ -1,11 +1,10 @@
-
-# 🧩 Bistro Boss – Full Stack Web App
+# 🤩 Bistro Boss – Full Stack Web App
 
 A modern full-stack restaurant or food ordering application built using:
 
-- 🧠 **Frontend**: React 19, Vite, TailwindCSS, DaisyUI, React Hook Form, TanStack Query, GSAP
+- 🧠 **Frontend**: React 19, Vite, TailwindCSS, DaisyUI, React Hook Form, TanStack Query, GSAP, **React Toastify**
 - ⚙️ **Backend**: Express.js, MongoDB, Node.js
-- 🔐 **Features**: Auth (Firebase), EmailJS, Dark/Light Theme, Animated UI
+- 🔐 **Features**: Auth (Firebase), EmailJS, Dark/Light Theme, Animated UI, Toast Notifications
 
 ---
 
@@ -22,19 +21,22 @@ A modern full-stack restaurant or food ordering application built using:
 ## 🚀 Features
 
 ### 🔹 Frontend (`/client`)
+
 - ⚡ Vite-powered React 19 app
 - 🎨 Beautiful responsive UI with **TailwindCSS + DaisyUI**
 - 🔄 **React Hook Form** with Zod validation
-- 📡 API requests with **Axios**
+- 📱 API requests with **Axios**
 - ⚛️ **TanStack Query** for data fetching and caching
 - ✨ **GSAP animations** and parallax effects
+- 🔔 **React Toastify** for toast notifications
 - 🔐 **Firebase authentication**
 - 🌗 Light/Dark theme toggle using DaisyUI
 - 📬 Email support via **EmailJS**
 
 ### 🔹 Backend (`/backend`)
+
 - 🖥️ Express server with REST API endpoints
-- 💾 MongoDB with native driver
+- 📂 MongoDB with native driver
 - 🔐 CORS + environment variables with `dotenv`
 - 🔄 Nodemon for live reload in development
 
@@ -42,14 +44,51 @@ A modern full-stack restaurant or food ordering application built using:
 
 ## 🛠️ Tech Stack
 
-| Layer      | Technology                          |
-|------------|--------------------------------------|
-| Frontend   | React, Vite, TailwindCSS, DaisyUI    |
-| Animations | GSAP, React Parallax                 |
-| State/Data | React Hook Form, TanStack Query      |
-| Auth       | Firebase Auth                        |
-| Backend    | Express.js, MongoDB, Nodemon         |
-| Email      | EmailJS                              |
+| Layer         | Technology                        |
+| ------------- | --------------------------------- |
+| Frontend      | React, Vite, TailwindCSS, DaisyUI |
+| Animations    | GSAP, React Parallax              |
+| State/Data    | React Hook Form, TanStack Query   |
+| Notifications | React Toastify                    |
+| Auth          | Firebase Auth                     |
+| Backend       | Express.js, MongoDB, Nodemon      |
+| Email         | EmailJS                           |
+
+---
+
+## 🔔 Toast Notification (React Toastify)
+
+To use toast notifications:
+
+1. Install:
+
+   ```bash
+   npm install react-toastify
+   ```
+
+2. Add in your root file (e.g., `main.jsx` or `App.jsx`):
+
+   ```jsx
+   import { ToastContainer } from "react-toastify";
+   import "react-toastify/dist/ReactToastify.css";
+
+   function App() {
+     return (
+       <>
+         {/* Your routes and layout */}
+         <ToastContainer />
+       </>
+     );
+   }
+   ```
+
+3. Trigger a toast:
+
+   ```js
+   import { toast } from "react-toastify";
+
+   toast.success("Added to cart!");
+   ```
 
 ---
 
@@ -64,6 +103,7 @@ npm run start
 ```
 
 Make sure you add your `.env` file:
+
 ```env
 PORT=5000
 MONGODB_URI=your_mongodb_connection_string
@@ -84,10 +124,12 @@ npm run dev
 ## 🌐 Environment Variables
 
 - **Backend**:
+
   - `PORT` – your backend server port
   - `MONGODB_URI` – your MongoDB connection string
 
 - **Frontend**:
+
   - Firebase config
   - EmailJS public key
 
@@ -97,17 +139,13 @@ Use `.env` files in both folders and load them securely.
 
 ## 📸 Screenshots
 
-> _You can add images here using GitHub markdown or deployed links_
-
-
 ![](fullpage.png)
 ![](dashboard.png)
 
-
 ---
 
-## 📮 Contact
+## 📬 Contact
 
-Created with 💙 by [Argho Dev]
+Created with 💙 by \[Argho Dev]
 
 > Feel free to open an issue or pull request for suggestions or improvements.
