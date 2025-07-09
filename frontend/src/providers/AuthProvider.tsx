@@ -10,14 +10,16 @@ import {
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
   type User as FirebaseUser,
 } from "firebase/auth";
 import app from "../firebase/Firebase.config";
-
+const provider = new GoogleAuthProvider();
 
 // 1. Define the context type
 interface AuthContextType {
@@ -25,6 +27,7 @@ interface AuthContextType {
   loading: boolean;
   createUser: (email: string, password: string) => Promise<any>;
   signIn: (email: string, password: string) => Promise<any>;
+  googleSignIn: () => Promise<any>;
   logOut: () => Promise<void>;
   updateUserProfile: (name: string, photo: string) => Promise<void>;
 }
@@ -36,7 +39,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 const auth = getAuth(app);
 
 // 4. Props type for the provider
-interface AuthProviderProps { 
+interface AuthProviderProps {
   children: ReactNode;
 }
 
@@ -53,6 +56,11 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const signIn = (email: string, password: string) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const googleSignIn = () => {
+    setLoading(true);
+    return signInWithPopup(auth, provider);
   };
 
   const logOut = () => {
@@ -82,6 +90,7 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     loading,
     createUser,
     signIn,
+    googleSignIn,
     logOut,
     updateUserProfile,
   };

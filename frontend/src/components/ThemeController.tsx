@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 const ThemeController = () => {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("cupcake");
 
   // Load theme from localStorage
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
+    const storedTheme = localStorage.getItem("theme") || "cupcake";
     if (storedTheme) {
       setTheme(storedTheme);
       document.documentElement.setAttribute("data-theme", storedTheme);
@@ -13,7 +13,7 @@ const ThemeController = () => {
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
+    const newTheme = theme === "light" ? "forest" : "light";
     setTheme(newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
     localStorage.setItem("theme", newTheme);
@@ -23,7 +23,7 @@ const ThemeController = () => {
       <label className="swap swap-rotate cursor-pointer">
         <input
           type="checkbox"
-          checked={theme === "dark"}
+          checked={theme === "forest"}
           onChange={toggleTheme}
         />
 

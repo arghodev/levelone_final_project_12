@@ -85,13 +85,11 @@ const ContactForm = () => {
   };
 
   return (
-    <section className=" px-10 flex justify-center gap-5 ">
+    <section className={` px-10 flex justify-center gap-5 drop-shadow-md/50  `}>
       <div className="hero flex-1  my-10 ">
-        <div className="hero-content flex-col lg:flex-col w-full max-w-2xl bg-white rounded-lg shadow-xl p-10">
+        <div className="hero-content flex-col lg:flex-col w-full max-w-2xl  rounded-lg shadow-xl p-10">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-800 mb-6">
-              Contact Us
-            </h1>
+            <h1 className="text-4xl font-bold  mb-6">Contact Us</h1>
           </div>
           <div className="divider p-0 m-0"></div>
           <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-5">
@@ -175,8 +173,8 @@ const ContactForm = () => {
           </form>
         </div>
       </div>
-      <div className="flex-1 justify-center items-center flex">
-        <img src={img} alt="" className="w-96 h-96 object-cover" />
+      <div className="flex-1 justify-center items-center flex bg">
+        <img src={img} alt="" className="w-96 h-96 object-cover " />
       </div>
     </section>
   );

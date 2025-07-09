@@ -21,3 +21,12 @@ export interface ApiResponse {
   message?: string;
   insertedId?: string;
 }
+
+export interface IUser {
+  email: string;
+  password: string;
+  name: string;
+  photoURL: string;
+  role: string;
+  _id: string;
+}

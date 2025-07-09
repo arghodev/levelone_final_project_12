@@ -9,6 +9,7 @@ import SignUp from "../pages/signup/SignUp";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import CartPage from "../pages/dashboard/Cart";
+import AllUsers from "../pages/dashboard/AllUsers";
 
 const router = createBrowserRouter([
   {
@@ -44,15 +45,19 @@ const router = createBrowserRouter([
   },
   {
     path: "dashboard",
-    Component: DashboardLayout,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "cart",
-        element: (
-          <PrivateRoute>
-            <CartPage />
-          </PrivateRoute>
-        ),
+        Component: CartPage,
+      },
+      {
+        path: "allUsers",
+        Component: AllUsers,
       },
     ],
   },

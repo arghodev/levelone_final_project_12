@@ -90,13 +90,13 @@ const Navber = () => {
           <div>
             {user ? (
               <button
-                className=" p-2 rounded transition-all duration-300 cursor-pointer btn btn-wide dark:btn btn-warning btn-soft text-white"
+                className=" p-2 rounded transition-all duration-300 cursor-pointer btn btn-wide dark:btn btn-warning btn-soft "
                 onClick={logOut}
               >
                 Logout
               </button>
             ) : (
-              <button className="hover:bg-gray-700 p-2 rounded transition-all duration-300 cursor-pointer btn btn-wide btn-warning btn-soft text-white dark:btn">
+              <button className=" p-2 rounded transition-all duration-300 cursor-pointer btn btn-wide text-lg btn-soft border-0 ">
                 <Link to="/login">Login</Link>
               </button>
             )}
@@ -114,7 +114,11 @@ const Navber = () => {
                     className="btn w-14 btn-ghost btn-circle avatar"
                   >
                     <div className="w-16 rounded-full">
-                      <img alt="photo" src={user?.photoURL ?? undefined} />
+                      <img
+                        referrerPolicy="no-referrer"
+                        alt="photo"
+                        src={user?.photoURL ?? undefined}
+                      />
                     </div>
                   </div>
                   <ul
@@ -131,7 +135,7 @@ const Navber = () => {
                       <a>Settings</a>
                     </li>
                     <li>
-                      <a>Logout</a>
+                      <button onClick={logOut}>Logout</button>
                     </li>
                   </ul>
                 </div>

@@ -73,7 +73,7 @@ const LoginPage = () => {
             <div className="divider ">OR</div>
           </form>
           <div className="flex items-center justify-center my-3">
-            <button className="btn bg-white text-black border-[#e5e5e5]">
+            <button className="btn  border-white/50 ">
               <svg
                 aria-label="Google logo"
                 width="16"

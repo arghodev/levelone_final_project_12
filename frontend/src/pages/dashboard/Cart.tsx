@@ -2,13 +2,20 @@ import { MdDelete } from "react-icons/md";
 import useCart from "../../hooks/useCart";
 import type { CartItem } from "../../types/propsTypes";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useAuth } from "../../hooks/useAuth";
+import SkeletenLoader from "../../components/shared/SkeletonLoader";
 
 const CartPage = () => {
   const axiosSecure = useAxiosSecure();
-  const { refetch, data } = useCart();
-  //   console.log(data[0]._id);
+  const { refetch, data = [] } = useCart();
+  const { user } = useAuth();
+  // console.log(data[0]._id);
 
-  const totalPrice = data.reduce(
+  if (!user || !data) {
+    return <SkeletenLoader />;
+  }
+
+  const totalPrice = data?.reduce(
     (sum: number, item: CartItem): number => sum + item.price,
     0
   );
@@ -28,7 +35,7 @@ const CartPage = () => {
     <section className="container mx-auto">
       <div className="flex justify-between border-t-2 border-b-2 border-black/20 py-5 items-center">
         <h1 className="text-xl ">
-          Total Order: <span className="font-black"> {data.length} </span>
+          Total Order: <span className="font-black "> {data.length || 0} </span>
         </h1>
         <h1 className="text-xl ">
           Total Price: <span className="font-black"> ${totalPrice} </span>
@@ -57,7 +64,7 @@ const CartPage = () => {
               {data.map((item: CartItem) => (
                 <>
                   {/* row 1 */}
-                  <tr key={item.name}>
+                  <tr key={item._id}>
                     <th>
                       <label>
                         <input type="checkbox" className="checkbox" />
