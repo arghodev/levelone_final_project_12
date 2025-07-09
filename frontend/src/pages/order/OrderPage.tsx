@@ -80,6 +80,8 @@ const OrderPage = () => {
         <title>Project 12 | Order </title>
       </Helmet>
 
+
+
       <div className=" mt-20">
         <Parallax
           blur={{ min: -15, max: 20 }}
