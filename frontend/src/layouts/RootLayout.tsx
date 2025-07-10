@@ -24,7 +24,7 @@ const RootLayout = () => {
   }, []);
 
   return (
-    <section>
+    <section className="lato">
       <div id="smooth-wrapper">
         <nav>
           <Navber />

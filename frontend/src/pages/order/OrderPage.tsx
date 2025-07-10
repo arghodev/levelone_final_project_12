@@ -14,7 +14,7 @@ import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const OrderPage = () => {
-  const [menu, loading] = useMenu();
+  const { menu, loading } = useMenu();
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -80,9 +80,7 @@ const OrderPage = () => {
         <title>Project 12 | Order </title>
       </Helmet>
 
-
-
-      <div className=" mt-20">
+      <div className=" mt-19">
         <Parallax
           blur={{ min: -15, max: 20 }}
           bgImage={

@@ -1,7 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const LoginPage = () => {
+  const { googleSignIn } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
   interface User {
     email: string | null;
     password: string | null;
@@ -11,6 +15,7 @@ const LoginPage = () => {
   const { signIn } = useAuth();
 
   const from = location.state?.from?.pathname || "/";
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -40,6 +45,22 @@ const LoginPage = () => {
           console.log(err);
         });
     }
+  };
+
+  const handleGoogleSignIn = () => {
+    googleSignIn().then((result) => {
+      const loggedUser = {
+        name: result.user?.displayName,
+        email: result.user?.email,
+        photoURL: result.user?.photoURL,
+      };
+      // console.log(loggedUser);
+
+      axiosSecure.post("/users", loggedUser).then((res) => {
+        console.log(res.data);
+        navigate("/");
+      });
+    });
   };
 
   return (
@@ -73,7 +94,10 @@ const LoginPage = () => {
             <div className="divider ">OR</div>
           </form>
           <div className="flex items-center justify-center my-3">
-            <button className="btn  border-white/50 ">
+            <button
+              onClick={handleGoogleSignIn}
+              className="btn  border-white/50 "
+            >
               <svg
                 aria-label="Google logo"
                 width="16"

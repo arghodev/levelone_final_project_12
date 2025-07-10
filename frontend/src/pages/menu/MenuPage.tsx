@@ -8,7 +8,7 @@ import { Link } from "react-router";
 import { useState } from "react";
 
 const MenuPage = () => {
-  const [menu, loading] = useMenu();
+  const { menu, loading } = useMenu();
   const [visibleCount, setVisibleCount] = useState(6);
 
   const popular = menu.filter((item: MenuItem) => item.category === "popular");
@@ -25,7 +25,7 @@ const MenuPage = () => {
   // const drinks = menu.filter((item: any) => item.category === "drinks");
 
   return (
-    <section className="mt-20 container mx-auto">
+    <section className="mt-19 ">
       <Helmet>
         <title>Project 12 | Menu </title>
       </Helmet>

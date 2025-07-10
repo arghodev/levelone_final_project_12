@@ -5,11 +5,14 @@ import Error from "../components/Error";
 import MenuPage from "../pages/menu/MenuPage";
 import OrderPage from "../pages/order/OrderPage";
 import LoginPage from "../pages/login/LoginPage";
-import SignUp from "../pages/signup/SignUp";
+import SignUp from "../pages/signup/SignUpPage";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
 import CartPage from "../pages/dashboard/Cart";
 import AllUsers from "../pages/dashboard/AllUsers";
+import AddItemPage from "../pages/dashboard/AddItem";
+import AdminRoute from "./AdminRoute";
+import ManageItem from "../pages/dashboard/ManageItem";
 
 const router = createBrowserRouter([
   {
@@ -51,13 +54,37 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
+      // normal user
       {
         path: "cart",
         Component: CartPage,
       },
+
+      // admin
       {
         path: "allUsers",
-        Component: AllUsers,
+        element: (
+          <AdminRoute>
+            {" "}
+            <AllUsers />{" "}
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "addItem",
+        element: (
+          <AdminRoute>
+            <AddItemPage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manageItems",
+        element: (
+          <AdminRoute>
+            <ManageItem />
+          </AdminRoute>
+        ),
       },
     ],
   },

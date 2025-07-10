@@ -9,13 +9,17 @@ import { GiStarsStack } from "react-icons/gi";
 import { IoIosBookmarks } from "react-icons/io";
 import { IoHome, IoReorderFour } from "react-icons/io5";
 import { MdMenuBook } from "react-icons/md";
-import { NavLink, Outlet } from "react-router"; // ← FIX: router-dom
+import { NavLink, Outlet, useNavigate } from "react-router";
+import { useAuth } from "../hooks/useAuth";
+import useIsAdmin from "../hooks/useIsAdmin";
+import SkeletenLoader from "../components/shared/SkeletonLoader";
+import { useEffect } from "react";
 
 const adminMenu = [
   { to: "/dashboard/adminHome", label: "Admin Home", icon: <IoHome /> },
-  { to: "/dashboard/additem", label: "Add Item", icon: <FaCartArrowDown /> },
+  { to: "/dashboard/addItem", label: "Add Item", icon: <FaCartArrowDown /> },
   {
-    to: "/dashboard/manageItem",
+    to: "/dashboard/manageItems",
     label: "Manage Items ",
     icon: <FaListUl />,
   },
@@ -46,9 +50,25 @@ const mainNav = [
 ];
 
 const DashboardLayout = () => {
-  const isAdmin = true; // ← dynamically replace this with your auth logic
+  const { logOut } = useAuth();
+  const { isAdmin, isAdminLoading } = useIsAdmin();
+  const navigate = useNavigate();
 
-  const activeClass = "text-white bg-info font-bold underline";
+  useEffect(() => {
+    if (isAdminLoading) return;
+    if (isAdmin) {
+      navigate("/dashboard/allUsers", { replace: true });
+    } else {
+      navigate("/dashboard/cart", { replace: true });
+    }
+  }, [isAdmin, isAdminLoading, navigate]);
+
+  if (isAdminLoading) {
+    return <SkeletenLoader />;
+  }
+  // console.log(isAdmin);
+
+  const activeClass = "text-white bg-black font-bold underline transition-all duration-300";
   const inactiveClass = "text-black";
 
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
@@ -92,6 +112,13 @@ const DashboardLayout = () => {
             </li>
           ))}
         </ul>
+        <div className="divider" />
+
+        <div className="flex justify-center items-center w-full p-5">
+          <button onClick={() => logOut()} className="btn btn-wide ">
+            Log out
+          </button>
+        </div>
       </div>
 
       <div className="w-full  flex-1 p-10">

@@ -13,7 +13,7 @@ const ThemeController = () => {
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "forest" : "light";
+    const newTheme = theme === "cupcake" ? "forest" : "cupcake";
     setTheme(newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
     localStorage.setItem("theme", newTheme);

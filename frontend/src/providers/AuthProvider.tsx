@@ -19,6 +19,7 @@ import {
   type User as FirebaseUser,
 } from "firebase/auth";
 import app from "../firebase/Firebase.config";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 const provider = new GoogleAuthProvider();
 
 // 1. Define the context type
@@ -47,6 +48,7 @@ interface AuthProviderProps {
 const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const axiosPublic = useAxiosPublic();
 
   const createUser = (email: string, password: string) => {
     setLoading(true);
@@ -79,6 +81,20 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+
+      if (currentUser) {
+        const userInfo = { email: currentUser.email };
+        axiosPublic.post("/jwt", userInfo).then((res) => {
+          if (res.data.token) {
+            const token = res.data.token;
+            // console.log(token);
+            localStorage.setItem("access-token", token);
+          }
+        });
+      } else {
+        localStorage.removeItem("access-token");
+      }
+
       setLoading(false);
     });
 

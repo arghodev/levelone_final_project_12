@@ -30,17 +30,17 @@ const Navber = () => {
 
   return (
     <section>
-      <nav className="bg-gray-500 flex items-center justify-around text-white p-4 fixed top-0 left-0 right-0 z-50 ">
+      <nav className="bg-gray-500 flex items-center justify-around text-white p-4 fixed top-0 left-0 right-0 z-50 display ">
         <div className="flex items-center gap-2 ">
           <img
             src="./src/assets/logo.png"
             alt=""
-            className="size-14 animate-pulse"
+            className="size-10 animate-pulse"
           />
           <h2 className="text-3xl font-bold ">Bistro Boss</h2>
         </div>
         <div>
-          <ul className="flex space-x-4 font-black">
+          <ul className="flex space-x-4 font-semibold">
             {nav.map((item) => (
               <li
                 key={item.name}

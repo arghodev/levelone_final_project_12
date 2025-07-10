@@ -13,12 +13,25 @@ const AllUsers = () => {
   const handleDelete = (id: string | undefined) => {
     console.log(id);
     axiosPublic
-      .delete(`/users/${id}`)
+      .delete(`/users/admin/${id}`)
       .then((res: { data: { deletedCount: number } }) => {
         if (res.data.deletedCount > 0) {
           toast.success("Deleted Successfully");
           refetch();
           console.log(res.data);
+        }
+      });
+  };
+
+  const handleMakeAdmin = (user: IUser) => {
+    // console.log(user);
+    axiosPublic
+      .patch(`/users/admin/${user._id}`)
+      .then((res: { data: { modifiedCount: number } }) => {
+        if (res.data.modifiedCount > 0) {
+          toast.success(`${user.name} is an Admin Now!`);
+          refetch();
+          // console.log(res.data);
         }
       });
   };
@@ -49,42 +62,46 @@ const AllUsers = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.map((item: IUser) => (
+                {data.map((user: IUser) => (
                   <>
                     {/* row 1 */}
-                    <tr key={item.email}>
+                    <tr key={user._id}>
                       <td>
                         <div className="flex items-center gap-3">
                           <div className="avatar">
                             <div className="mask mask-squircle h-12 w-12">
                               <img
-                                src={item.photoURL}
+                                src={user.photoURL}
                                 alt="Avatar Tailwind CSS Component"
                               />
                             </div>
                           </div>
                           <div>
-                            <div className="font-bold">{item.name}</div>
+                            <div className="font-bold">{user.name}</div>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <span className="badge  badge-md">{item.email}</span>
+                        <span className="badge  badge-md">{user.email}</span>
                       </td>
                       <td className="text-lg">
                         <span className="font-black">
-                          <button
-                            //   onClick={() => handleDelete(item._id)}
-                            className="btn btn-soft  font-black hover:text-amber-500 text-white bg-amber-500 border-0"
-                          >
-                            {item.role}
-                            <FaUserAlt className="text-xl" />
-                          </button>
+                          {user.role == "admin" ? (
+                            "Admin"
+                          ) : (
+                            <button
+                              onClick={() => handleMakeAdmin(user)}
+                              className="btn btn-soft  font-black hover:text-amber-500 hover:bg-white text-white bg-amber-500 border-0"
+                            >
+                              {user.role}
+                              <FaUserAlt className="text-xl" />
+                            </button>
+                          )}
                         </span>
                       </td>
                       <th>
                         <button
-                          onClick={() => handleDelete(item._id)}
+                          onClick={() => handleDelete(user._id)}
                           className="btn btn-soft font-black hover:text-white hover:bg-red-500 text-red-500 bg-white border-0"
                         >
                           <MdDelete className="text-2xl" />
