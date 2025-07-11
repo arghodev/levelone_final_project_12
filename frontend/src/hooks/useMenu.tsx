@@ -29,10 +29,11 @@
 
 import { useQuery } from "@tanstack/react-query";
 import type { MenuItem } from "../types/propsTypes";
-import useAxiosSecure from "./useAxiosSecure";
+import useAxiosPublic from "./useAxiosPublic";
+// import useAxiosSecure from "./useAxiosSecure";
 
 const useMenu = () => {
-  const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic();
   const {
     data: menu = [],
     isLoading: loading,
@@ -42,10 +43,9 @@ const useMenu = () => {
   } = useQuery<MenuItem[], Error>({
     queryKey: ["menu"],
     queryFn: async () => {
-      const res = await axiosSecure.get("http://localhost:3000/menu");
+      const res = await axiosPublic.get("http://localhost:3000/menu");
       return res.data;
     },
-    staleTime: 5 * 60 * 1000, // optional: 5 minutes
   });
 
   if (isError) {

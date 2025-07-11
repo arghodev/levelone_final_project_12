@@ -3,6 +3,7 @@ import {
   FaCalendarAlt,
   FaCartArrowDown,
   FaListUl,
+  FaMoneyBillWave,
   FaUser,
 } from "react-icons/fa";
 import { GiStarsStack } from "react-icons/gi";
@@ -29,6 +30,7 @@ const adminMenu = [
     icon: <FaBookOpen />,
   },
   { to: "/dashboard/allUsers", label: "All Users", icon: <FaUser /> },
+  { to: "/dashboard/payment", label: "Payment", icon: <FaMoneyBillWave /> },
 ];
 
 const userMenu = [
@@ -68,7 +70,8 @@ const DashboardLayout = () => {
   }
   // console.log(isAdmin);
 
-  const activeClass = "text-white bg-black font-bold underline transition-all duration-300";
+  const activeClass =
+    "text-white bg-black font-bold underline transition-all duration-300";
   const inactiveClass = "text-black";
 
   const navItemClass = ({ isActive }: { isActive: boolean }) =>

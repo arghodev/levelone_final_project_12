@@ -121,9 +121,9 @@ const OrderPage = () => {
               {Salad.map((item: MenuItem) => (
                 <div
                   key={item._id}
-                  className="max-w-xs p-6 rounded-md shadow-md bg-zinc-500  relative"
+                  className="max-w-xs p-10 rounded-md shadow-md shadow-gray-400  relative"
                 >
-                  <div className="absolute top-0 right-0 px-6  text-base font-bold text-amber-500 bg-black rounded-l-2xl">
+                  <div className="absolute top-0 right-0 px-6  text-base font-bold text-amber-500 bg-black rounded-l-2xl ">
                     {" "}
                     $ {item.price}{" "}
                   </div>
@@ -132,7 +132,7 @@ const OrderPage = () => {
                     alt=""
                     className="object-cover object-center w-full rounded-md h-72 "
                   />
-                  <div className="mt-6 mb-2 text-white">
+                  <div className="mt-6 mb-2 ">
                     <span className="block text-xs font-medium tracking-widest uppercase ">
                       {item.category}
                     </span>
@@ -140,7 +140,7 @@ const OrderPage = () => {
                       Nam maximus purus
                     </h2>
                   </div>
-                  <p className="text-white">
+                  <p className="">
                     Mauris et lorem at elit tristique dignissim et ullamcorper
                     elit. In sed feugiat mi. Etiam ut lacinia dui.
                   </p>
@@ -158,9 +158,9 @@ const OrderPage = () => {
             </div>
           </TabPanel>
           <TabPanel>
-            <div className="container mx-auto  flex items-center justify-around gap-2  py-10 ">
+            <div className="container mx-auto  flex flex-wrap items-center justify-around gap-2  py-10 ">
               {drinks.map((item: MenuItem) => (
-                <div className="max-w-xs p-6 rounded-md shadow-lg bg-zinc-500 drop-shadow-xl ">
+                <div className="max-w-xs p-6 rounded-md shadow-lg  drop-shadow-xl ">
                   <img
                     src={item.image}
                     alt=""

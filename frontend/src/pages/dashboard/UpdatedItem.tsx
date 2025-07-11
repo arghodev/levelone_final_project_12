@@ -5,6 +5,7 @@ import { GiKnifeFork } from "react-icons/gi";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { toast } from "react-toastify";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useLoaderData } from "react-router";
 
 type Inputs = {
   recipeName: string;
@@ -17,19 +18,19 @@ type Inputs = {
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_url = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
-const AddItemPage = () => {
+const UpdatedItem = () => {
   const [loading, setLoading] = useState(false);
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
+  const selectedItem = useLoaderData();
 
   const {
     register,
     handleSubmit,
-    reset,
+    // reset,
     formState: { errors },
   } = useForm<Inputs>();
 
-  
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setLoading(true);
 
@@ -48,13 +49,13 @@ const AddItemPage = () => {
         price: data.price,
       };
 
-      axiosSecure.post("/menu", menuItem).then((res) => {
-        if (res.data.insertedId) {
-          toast.success("Item added successfully", {
+      axiosSecure.patch(`/menu/${selectedItem._id}`, menuItem).then((res) => {
+        if (res.data.modifiedCount > 0) {
+          toast.success("Item updated successfully", {
             position: "top-right",
             theme: "colored",
           });
-
+          // reset();
           console.log(res.data);
         }
       });
@@ -62,7 +63,6 @@ const AddItemPage = () => {
     // Simulate async request
     await new Promise((resolve) => setTimeout(resolve, 3000));
     console.log(data);
-    reset();
     setLoading(false);
   };
 
@@ -76,6 +76,7 @@ const AddItemPage = () => {
           <fieldset className="fieldset text-xl">
             <legend className="fieldset-legend ">Recipe Name*:</legend>
             <input
+              defaultValue={selectedItem?.name}
               type="text"
               placeholder="Recipe Name"
               {...register("recipeName", { required: true })}
@@ -90,7 +91,7 @@ const AddItemPage = () => {
               <legend className="fieldset-legend">Category*:</legend>
               {/* <label className="input">Category Selection</label> */}
               <select
-                defaultValue=""
+                defaultValue={selectedItem?.category}
                 className="select  text-lg w-[200px] max-w-sm"
                 {...register("category", { required: true })}
               >
@@ -110,6 +111,7 @@ const AddItemPage = () => {
             <fieldset className="fieldset text-xl">
               <legend className="fieldset-legend">Price*:</legend>
               <input
+                defaultValue={selectedItem?.price}
                 type="text"
                 placeholder="Price"
                 {...register("price", { required: true })}
@@ -123,6 +125,7 @@ const AddItemPage = () => {
           <fieldset className="fieldset">
             <legend className="fieldset-legend text-xl">Recipe Details:</legend>
             <textarea
+              defaultValue={selectedItem?.recipeDetails}
               className="textarea  w-full"
               placeholder=" description"
               {...register("recipeDetails", { required: true })}
@@ -159,7 +162,7 @@ const AddItemPage = () => {
               ) : (
                 <>
                   <GiKnifeFork className=" text-2xl font-bold mr-2 animate-bounce " />
-                  Add Item
+                  Update Item
                 </>
               )}
             </button>
@@ -170,4 +173,4 @@ const AddItemPage = () => {
   );
 };
 
-export default AddItemPage;
+export default UpdatedItem;

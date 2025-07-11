@@ -4,7 +4,7 @@ export interface MenuItem {
   price: number;
   category: string;
   _id: string;
-  recipe: string;
+  recipeDetails: string;
 }
 
 export interface CartItem {

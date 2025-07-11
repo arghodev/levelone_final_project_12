@@ -6,12 +6,13 @@ import type { MenuItem } from "../../types/propsTypes";
 import { MdDelete } from "react-icons/md";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { toast } from "react-toastify";
+import { Link } from "react-router";
 
 const ManageItem = () => {
   const axiosSecure = useAxiosSecure();
   const { menu, loading, refetch } = useMenu();
 
-  console.log(menu.length);
+  // console.log(menu.length);
 
   const handleDelete = (item: MenuItem) => {
     if (!window.confirm(`Delete ${item.name}?`)) return;
@@ -42,6 +43,12 @@ const ManageItem = () => {
         <TitleSection heading="Manage all Item" subheading="hurry up" />
       </div>
       <div>
+        <div className="flex  bg-warning py-2 justify-center rounded-t-2xl">
+          <h2 className="text-2xl ">
+            Total Items:{" "}
+            <span className="text-white font-bold">{menu.length}</span>
+          </h2>
+        </div>
         <div className="overflow-x-auto">
           <table className="table">
             {/* head */}
@@ -78,9 +85,11 @@ const ManageItem = () => {
                     </p>
                   </th>
                   <th>
-                    <button className="btn bg-black text-white hover:bg-white hover:text-black btn-md transition duration-300 border-0 drop-shadow-xl">
-                      <FaEdit className="text-xl" />
-                    </button>
+                    <Link to={`/dashboard/updateItem/${item._id}`}>
+                      <button className="btn bg-black text-white hover:bg-white hover:text-black btn-md transition duration-300 border-0 drop-shadow-xl">
+                        <FaEdit className="text-xl" />
+                      </button>
+                    </Link>
                   </th>
                   <th>
                     <button
