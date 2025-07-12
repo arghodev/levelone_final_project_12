@@ -6,6 +6,14 @@ require("dotenv").config();
 const port = process.env.PORT || 3000;
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
+const formData = require("form-data");
+const Mailgun = require("mailgun.js");
+const mailgun = new Mailgun(formData);
+const mg = mailgun.client({
+  username: "api",
+  key: process.env.MAILGUN_API_KEY || "key-yourkeyhere",
+});
+
 // middleware
 
 const corsOptions = {
@@ -223,6 +231,156 @@ async function run() {
         },
       };
       const deleteResult = await cartCollection.deleteMany(query);
+      console.log("payment ==>", payment);
+
+      //todo: send email
+
+      mg.messages
+        .create("sandbox-123.mailgun.org", {
+          from: process.env.MAIL_SENDING_DOMAIN,
+          to: ["arghodev@gmail.com"],
+          subject: "Bistro Boss Order Confirmation",
+          text: "Testing some Mailgun awesomness!",
+          //           html: `
+          //           <!DOCTYPE html>
+          // <html lang="en">
+          //   <head>
+          //     <meta charset="UTF-8" />
+          //     <title>Order Confirmation</title>
+          //     <style>
+          //       body {
+          //         margin: 0;
+          //         padding: 0;
+          //         font-family: Arial, sans-serif;
+          //         background-color: #f4f4f4;
+          //       }
+
+          //       .email-container {
+          //         max-width: 600px;
+          //         margin: 20px auto;
+          //         background-color: #ffffff;
+          //         border-radius: 8px;
+          //         overflow: hidden;
+          //         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          //       }
+
+          //       .header {
+          //         background-color: #4f46e5;
+          //         color: #ffffff;
+          //         padding: 20px;
+          //         text-align: center;
+          //       }
+
+          //       .header h1 {
+          //         margin: 0;
+          //         font-size: 24px;
+          //       }
+
+          //       .content {
+          //         padding: 30px;
+          //       }
+
+          //       .content h2 {
+          //         margin-top: 0;
+          //         color: #333333;
+          //       }
+
+          //       .content p {
+          //         color: #555555;
+          //         line-height: 1.6;
+          //       }
+
+          //       table {
+          //         width: 100%;
+          //         border-collapse: collapse;
+          //         margin-top: 20px;
+          //       }
+
+          //       th,
+          //       td {
+          //         text-align: left;
+          //         padding: 12px;
+          //         border-bottom: 1px solid #e0e0e0;
+          //       }
+
+          //       th {
+          //         background-color: #f0f0f0;
+          //         font-weight: bold;
+          //       }
+
+          //       .total-row td {
+          //         font-weight: bold;
+          //         color: #000;
+          //       }
+
+          //       .footer {
+          //         background-color: #f0f0f0;
+          //         text-align: center;
+          //         font-size: 14px;
+          //         color: #888888;
+          //         padding: 15px;
+          //       }
+          //     </style>
+          //   </head>
+          //   <body>
+          //     <div class="email-container">
+          //       <div class="header">
+          //         <h1>Order Confirmation</h1>
+          //       </div>
+
+          //       <div class="content">
+          //         <h2>Hi {{customerName}},</h2>
+          //         <p>
+          //           Thank you for your order <strong>#{{orderId}}</strong> placed on
+          //           <strong>{{orderDate}}</strong>. Here is your order summary:
+          //         </p>
+
+          //         <table>
+          //           <thead>
+          //             <tr>
+          //               <th>Item</th>
+          //               <th>Qty</th>
+          //               <th>Price</th>
+          //             </tr>
+          //           </thead>
+          //           <tbody>
+          //             {{orderRows}}
+          //             <tr class="total-row">
+          //               <td colspan="2">Total</td>
+          //               <td>${""}</td>
+          //             </tr>
+          //           </tbody>
+          //         </table>
+
+          //         <p>
+          //           If you have any questions about your order, simply reply to this
+          //           email—we’re happy to help.
+          //         </p>
+          //       </div>
+
+          //       <div class="footer">
+          //         &copy; {{year}} Your Company Name. All rights reserved.
+          //       </div>
+          //     </div>
+          //   </body>
+          // </html>
+
+          //           `,
+          html: `
+       <div>
+        <h1>
+          Thank you for visiting our website and we hope you find what you are
+          looking for.
+        </h1>
+        <h2>Your Transiton ID: ${payment.transitionId}</h2>
+        <p>We would like to know your feedback</p>
+        </div>
+
+          `,
+        })
+        .then((msg) => console.log(msg)) // logs response data
+        .catch((err) => console.error(err)); // logs any error
+
       // console.log("payment  ==>", payment);
       res.send({ insertResult, deleteResult });
     });
