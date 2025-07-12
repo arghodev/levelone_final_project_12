@@ -89,17 +89,16 @@ const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             const token = res.data.token;
             // console.log(token);
             localStorage.setItem("access-token", token);
+            setLoading(false);
           }
         });
       } else {
         localStorage.removeItem("access-token");
       }
-
-      setLoading(false);
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [axiosPublic]);
 
   const authInfo: AuthContextType = {
     user,

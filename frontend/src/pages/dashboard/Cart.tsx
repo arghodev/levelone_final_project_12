@@ -4,6 +4,8 @@ import type { CartItem } from "../../types/propsTypes";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useAuth } from "../../hooks/useAuth";
 import SkeletenLoader from "../../components/shared/SkeletonLoader";
+import { Link } from "react-router";
+import { toast } from "react-toastify";
 
 const CartPage = () => {
   const axiosSecure = useAxiosSecure();
@@ -16,7 +18,7 @@ const CartPage = () => {
   }
 
   const totalPrice = data?.reduce(
-    (sum: number, item: CartItem): number => sum + item.price,
+    (sum: number, item: CartItem): number => Number(sum) + Number(item.price),
     0
   );
 
@@ -24,7 +26,7 @@ const CartPage = () => {
     console.log(id);
     axiosSecure.delete(`/carts/${id}`).then((res) => {
       if (res.data.deletedCount > 0) {
-        alert("Deleted Successfully");
+        toast.success("Deleted Successfully");
         refetch();
         console.log(res.data);
       }
@@ -40,7 +42,13 @@ const CartPage = () => {
         <h1 className="text-xl ">
           Total Price: <span className="font-black"> ${totalPrice} </span>
         </h1>
-        <button className="btn btn-wide btn-secondary font-black">PAY</button>
+        {data.length > 0 && (
+          <Link to="/dashboard/payment">
+            <button className="btn hover:bg-white hover:text-black transition-all duration-300 bg-black text-white font-black border-0">
+              PAY
+            </button>
+          </Link>
+        )}
       </div>
       <div className="drop-shadow-lg">
         <div className="overflow-x-auto ">

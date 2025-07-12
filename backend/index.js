@@ -4,6 +4,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const port = process.env.PORT || 3000;
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 // middleware
 
@@ -14,12 +15,39 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
-// ============================================
+//? ============================================
+
+//* payment intent
+//? ============================================
+
+app.post("/create-payment-intent", async (req, res) => {
+  const { price } = req.body;
+
+  if (!price || isNaN(price)) {
+    return res.status(400).send({ error: "Invalid price" });
+  }
+
+  const amount = parseInt(price * 100); // converting dollars to cents
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount,
+    currency: "usd",
+    payment_method_types: ["card"],
+  });
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  });
+});
+
+//? ============================================
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const e = require("express");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster.jxvjbeo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -39,8 +67,9 @@ async function run() {
     const userCollection = client.db("bistroDB").collection("users");
     const menuCollection = client.db("bistroDB").collection("menu");
     const cartCollection = client.db("bistroDB").collection("carts");
+    const paymentCollection = client.db("bistroDB").collection("payments");
 
-    // jwt
+    //! jwt
     app.post("/jwt", (req, res) => {
       const user = req.body;
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
@@ -49,7 +78,7 @@ async function run() {
       res.send({ token });
     });
 
-    // middleware
+    //! middleware
     const verifyJWT = (req, res, next) => {
       const authorization = req.headers.authorization;
 
@@ -97,7 +126,108 @@ async function run() {
       res.send({ admin });
     });
 
-    // users api
+    app.get("/admin-stats", verifyJWT, isAdmin, async (req, res) => {
+      const users = await userCollection.estimatedDocumentCount();
+      const menuItems = await menuCollection.estimatedDocumentCount();
+      const orders = await paymentCollection.estimatedDocumentCount();
+
+      // this is not the best way
+      // const payments = await paymentCollection.find().toArray();
+      // const revenue = payments.reduce((total, payment) => total + payment.price, 0);
+
+      const result = await paymentCollection
+        .aggregate([
+          {
+            $group: {
+              _id: null,
+              totalRevenue: {
+                $sum: "$price",
+              },
+            },
+          },
+        ])
+        .toArray();
+
+      const revenue = result.length > 0 ? result[0].totalRevenue : 0;
+
+      // console.log("revenue =>", revenue, users, menuItems, orders);
+
+      res.send({
+        users,
+        menuItems,
+        orders,
+        revenue,
+      });
+    });
+
+    // app.get("/order-stats", verifyJWT, isAdmin, async (req, res) => {
+    //   const result = await paymentCollection
+    //     .aggregate([
+    //       {
+    //         $unwind: "$menuItemIds",
+    //       },
+    //       {
+    //         $lookup: {
+    //           from: "menu",
+    //           localField: "menuItemIds",
+    //           foreignField: "_id",
+    //           as: "menuItems",
+    //         },
+    //       },
+    //       {
+    //         $unwind: "$menuItems",
+    //       },
+    //       {
+    //         $group: {
+    //           _id: "$menuItems.category",
+    //           quantity: { $sum: 1 },
+    //           revenue: { $sum: "$menuItems.price" },
+    //         },
+    //       },
+    //       {
+    //         $project: {
+    //           _id: 0,
+    //           category: "$_id",
+    //           quantity: "$quantity",
+    //           revenue: "$revenue",
+    //         },
+    //       },
+    //     ])
+    //     .toArray();
+
+    //   res.send(result);
+    // });
+
+    // payments api
+
+    app.get("/payments/:email", verifyJWT, async (req, res) => {
+      const email = req.params.email; // ✅ Fix: declare email from URL
+      const query = { email }; // ✅ Now email is defined
+
+      // console.log("query =>", query);
+
+      if (req.decoded.email !== email) {
+        res.status(403).send({ admin: false, message: "unauthorized access" });
+      }
+      const result = await paymentCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.post("/payments", async (req, res) => {
+      const payment = req.body;
+      const insertResult = await paymentCollection.insertOne(payment);
+
+      const query = {
+        _id: {
+          $in: payment.cartIds.map((id) => new ObjectId(id)),
+        },
+      };
+      const deleteResult = await cartCollection.deleteMany(query);
+      // console.log("payment  ==>", payment);
+      res.send({ insertResult, deleteResult });
+    });
+
+    //! users api
 
     app.get("/users", verifyJWT, isAdmin, async (req, res) => {
       const result = await userCollection.find().toArray();
@@ -137,7 +267,7 @@ async function run() {
       res.send(result);
     });
 
-    // menu api
+    //! menu api
     app.get("/menu", async (req, res) => {
       const result = await menuCollection.find().toArray();
       res.send(result);
@@ -181,7 +311,7 @@ async function run() {
       res.send(result);
     });
 
-    // cart api
+    //! cart api
     app.get("/carts", async (req, res) => {
       const email = req.query.email;
       const query = { email: email };

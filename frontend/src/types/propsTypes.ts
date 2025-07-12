@@ -30,3 +30,14 @@ export interface IUser {
   role: string;
   _id: string;
 }
+
+export interface IPaymentHistory {
+  cartId: string[];
+  date: string;
+  email: string;
+  menuId: string[];
+  price: number;
+  status: string;
+  _id: string;
+  transactionId: string;
+}

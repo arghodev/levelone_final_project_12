@@ -2,6 +2,7 @@ import {
   FaBookOpen,
   FaCalendarAlt,
   FaCartArrowDown,
+  FaHistory,
   FaListUl,
   FaMoneyBillWave,
   FaUser,
@@ -30,7 +31,6 @@ const adminMenu = [
     icon: <FaBookOpen />,
   },
   { to: "/dashboard/allUsers", label: "All Users", icon: <FaUser /> },
-  { to: "/dashboard/payment", label: "Payment", icon: <FaMoneyBillWave /> },
 ];
 
 const userMenu = [
@@ -41,8 +41,14 @@ const userMenu = [
     label: "Reservation",
     icon: <FaCalendarAlt />,
   },
-  { to: "/dashboard/review", label: "Add Review", icon: <GiStarsStack /> },
   { to: "/dashboard/booking", label: "My Booking", icon: <IoIosBookmarks /> },
+  { to: "/dashboard/payment", label: "Payment", icon: <FaMoneyBillWave /> },
+  {
+    to: "/dashboard/paymentHistory",
+    label: "History",
+    icon: <FaHistory />,
+  },
+  { to: "/dashboard/review", label: "Add Review", icon: <GiStarsStack /> },
 ];
 
 const mainNav = [
@@ -59,7 +65,7 @@ const DashboardLayout = () => {
   useEffect(() => {
     if (isAdminLoading) return;
     if (isAdmin) {
-      navigate("/dashboard/allUsers", { replace: true });
+      navigate("/dashboard/adminHome", { replace: true });
     } else {
       navigate("/dashboard/cart", { replace: true });
     }

@@ -15,6 +15,9 @@ import AdminRoute from "./AdminRoute";
 import ManageItem from "../pages/dashboard/ManageItem";
 import Payment from "../pages/dashboard/Payment";
 import UpdaateItem from "../pages/dashboard/UpdatedItem";
+import PaymentHistory from "../pages/dashboard/PaymentHistory";
+import UserHome from "../pages/dashboard/UserHome";
+import AdminHome from "../pages/dashboard/AdminHome";
 
 const router = createBrowserRouter([
   {
@@ -56,19 +59,30 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      // normal user
+      ////  normal user
       {
         path: "cart",
         Component: CartPage,
       },
+      {
+        path: "payment",
+        Component: Payment,
+      },
+      {
+        path: "paymentHistory",
+        Component: PaymentHistory,
+      },
+      {
+        path: "userHome",
+        Component: UserHome,
+      },
 
-      // admin
+      // // admin
       {
         path: "allUsers",
         element: (
           <AdminRoute>
-            {" "}
-            <AllUsers />{" "}
+            <AllUsers />
           </AdminRoute>
         ),
       },
@@ -89,6 +103,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "adminHome",
+        element: (
+          <AdminRoute>
+            <AdminHome />
+          </AdminRoute>
+        ),
+      },
+      {
         path: "updateItem/:id",
         element: (
           <AdminRoute>
@@ -97,14 +119,6 @@ const router = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(`http://localhost:3000/menu/${params.id}`),
-      },
-      {
-        path: "payment",
-        element: (
-          <AdminRoute>
-            <Payment />
-          </AdminRoute>
-        ),
       },
     ],
   },
